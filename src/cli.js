@@ -1,3 +1,4 @@
+/* eslint no-console:0 */
 import prog from 'caporal';
 import chalk from 'chalk';
 import emphasize from 'emphasize';
