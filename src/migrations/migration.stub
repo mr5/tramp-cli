@@ -1,0 +1,20 @@
+/* eslint-disable object-shorthand, func-names, no-param-reassign */
+module.exports = {
+  /**
+   * Run the migrations.
+   * @param {Builder} schema
+   */
+  up: function (schema) {
+    schema.create('DummyTable', (table) => {
+      table.increments('id');
+    });
+  },
+
+  /**
+   * Reverse the migrations.
+   * @param {Builder} schema
+   */
+  down: function (schema) {
+    schema.dropIfExists('DummyTable');
+  }
+};
