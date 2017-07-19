@@ -421,7 +421,7 @@ export default class Blueprint {
    * Create a new date-time column on the table.
    *
    * @param  {string}    column
-   * @param  {integer}    $precision
+   * @param  {number}   precision
    * @return {Object}
    */
   dateTime(column, precision = 0) {
@@ -432,7 +432,7 @@ export default class Blueprint {
    * Create a new date-time column (with time zone) on the table.
    *
    * @param  {string}    column
-   * @param  {integer}    $precision
+   * @param  {number}   precision
    * @return {Object}
    */
   dateTimeTz(column, precision = 0) {
@@ -467,7 +467,7 @@ export default class Blueprint {
    * Create a new uuid column on the table.
    *
    * @param  {string} column
-   * @return \Illuminate\Support\Fluent
+   * @return {Column}
    */
   uuid(column) {
     return this.addColumn('uuid', column);
@@ -477,7 +477,7 @@ export default class Blueprint {
    * Create a new IP address column on the table.
    *
    * @param  {string}  column
-   * @return {Object}
+   * @return {Column}
    */
   ipAddress(column) {
     return this.addColumn('ipAddress', column);
@@ -487,17 +487,18 @@ export default class Blueprint {
    * Create a new MAC address column on the table.
    *
    * @param  {string}  column
-   * @return {Object}
+   * @return {Column}
    */
   macAddress(column) {
     return this.addColumn('macAddress', column);
   }
 
   createIndexName(type, columns) {
-    if (_.isString(columns)) {
-      columns = [columns];
+    let columnArray = columns;
+    if (_.isString(columnArray)) {
+      columnArray = [columnArray];
     }
-    const index = [this.table, columns.join('_'), type].join('_');
+    const index = [this.table, columnArray.join('_'), type].join('_');
     return index.replace(/[-.]/, '_');
   }
 
@@ -538,7 +539,7 @@ export default class Blueprint {
   }
 
   getAddedColumns() {
-    return this.columns.filter(column => !Boolean(column.get('change')));
+    return this.columns.filter(column => !column.get('change'));
   }
 
   getChangedColumns() {
@@ -546,11 +547,10 @@ export default class Blueprint {
   }
 
   indexCommand(type, columns, index, algorithm = null) {
-
     // If no name was specified for this index, we will create one using a basic
     // convention of the table name, followed by the columns, followed by an
     // index type, such as primary or index, which makes the index unique.
-    index = index || this.createIndexName(type, columns);
+    index = index || this.createIndexName(type, columns); // eslint-disable-line no-param-reassign
 
     return this.addCommand(
       type, { index, columns, algorithm }
@@ -565,7 +565,7 @@ export default class Blueprint {
     // conventional name, so we will build the index name from the columns.
     if (Array.isArray(index)) {
       columns = index;
-      index = this.createIndexName(type, columns);
+      index = this.createIndexName(type, columns); // eslint-disable-line no-param-reassign
     }
 
     return this.indexCommand(command, columns, index);

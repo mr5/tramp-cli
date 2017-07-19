@@ -1,4 +1,5 @@
 import Builder from './builder';
+
 export default class MysqlBuilder extends Builder {
   async hasTable(tableName) {
     const table = `${this.connection.getTablePrefix()}${tableName}`;

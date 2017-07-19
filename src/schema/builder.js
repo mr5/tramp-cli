@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Blueprint from './blueprint';
 import Expression from '../expression';
+
 export default class Builder {
   constructor(connection) {
     this.sequences = [];

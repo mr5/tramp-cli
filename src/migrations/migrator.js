@@ -76,21 +76,22 @@ export default class Migrator {
   }
 
   absolutelyPath(path) {
-    path = _.trimEnd(path, '/');
-    if (path.startsWith('/')) {
-      return path;
+    let absolutelyPath = path;
+    absolutelyPath = _.trimEnd(absolutelyPath, '/');
+    if (absolutelyPath.startsWith('/')) {
+      return absolutelyPath;
     }
 
-    return `${process.cwd()}/${path}`;
+    return `${process.cwd()}/${absolutelyPath}`;
   }
 
   relativelyPath(path) {
-    path = _.trimEnd(path, '/');
-    if (path.startsWith('/')) {
-      return path.replace(`${process.cwd()}/`, '');
+    const relativelyPath = _.trimEnd(path, '/');
+    if (relativelyPath.startsWith('/')) {
+      return relativelyPath.replace(`${process.cwd()}/`, '');
     }
 
-    return path;
+    return relativelyPath;
   }
 
   async pendingMigrations() {

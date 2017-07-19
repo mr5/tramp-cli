@@ -10,7 +10,7 @@ export default class MysqlGrammar extends Grammar {
   modifiers() {
     return [
       'VirtualAs', 'StoredAs', 'Unsigned', 'Charset', 'Collation', 'Nullable',
-      'Default', 'AutoIncrement', 'Comment', 'After', 'First',
+      'Default', 'AutoIncrement', 'Comment', 'After', 'First'
     ];
   }
 
@@ -29,6 +29,7 @@ export default class MysqlGrammar extends Grammar {
    * @param command
    * @returns {string}
    */
+  // eslint-disable-next-line no-unused-vars
   compileChange(blueprint, command) {
     let sql = '';
     for (const column of blueprint.getChangedColumns()) {
@@ -57,6 +58,7 @@ export default class MysqlGrammar extends Grammar {
     return sql;
   }
 
+  // eslint-disable-next-line no-unused-vars
   compileRenameColumn(blueprint, command, connection) {
     return `/* Rename column: ${command.get('from')}, NOTICE: NULL means kept property */
       SET @ddl_sql=TRAMP_ALTER_COLUMN(
@@ -107,19 +109,20 @@ export default class MysqlGrammar extends Grammar {
   }
 
   compileCreateEncoding(sql, connection, blueprint) {
+    let newSql = sql;
     if (blueprint.charset) {
-      sql += ` DEFAULT CHARACTER SET ${blueprint.charset}`
+      newSql += ` DEFAULT CHARACTER SET ${blueprint.charset}`;
     } else if (connection.getConfig('charset')) {
-      sql += ` DEFAULT CHARACTER SET ${connection.getConfig('charset')}`
+      newSql += ` DEFAULT CHARACTER SET ${connection.getConfig('charset')}`;
     }
 
     if (blueprint.collation) {
-      sql += ` COLLATE ${blueprint.collation}`;
+      newSql += ` COLLATE ${blueprint.collation}`;
     } else if (connection.getConfig('collation')) {
-      sql += ` COLLATE ${connection.getConfig('collation')}`
+      newSql += ` COLLATE ${connection.getConfig('collation')}`;
     }
 
-    return sql;
+    return newSql;
   }
 
   compileCreateEngine(sql, connection, blueprint) {
@@ -132,6 +135,7 @@ export default class MysqlGrammar extends Grammar {
     return sql;
   }
 
+  // eslint-disable-next-line no-unused-vars
   compileAdd(blueprint, command) {
     const columns = this.prefixArray('ADD', this.getColumns(blueprint));
 
@@ -158,15 +162,17 @@ export default class MysqlGrammar extends Grammar {
       'ADD',
       type,
       this.wrap(command.get('index')),
-      command.get('algorithm') ? 'USING ' + command.get('algorithm') : '',
-      `(${this.columnize(command.get('columns')).trim()})`,
+      command.get('algorithm') ? `USING ${command.get('algorithm')}` : '',
+      `(${this.columnize(command.get('columns')).trim()})`
     ].filter(item => !['', null, undefined].includes(item)).join(' ').trim();
   }
 
+  // eslint-disable-next-line no-unused-vars
   compileDrop(blueprint, command) {
     return `DROP TABLE ${this.wrapTable(blueprint)}`;
   }
 
+  // eslint-disable-next-line no-unused-vars
   compileDropIfExists(blueprint, command) {
     return `DROP TABLE IF EXISTS ${this.wrapTable(blueprint)}`;
   }
@@ -176,6 +182,7 @@ export default class MysqlGrammar extends Grammar {
     return `ALTER TABLE ${this.wrapTable(blueprint)} ${columns.join(', ')}`;
   }
 
+  // eslint-disable-next-line no-unused-vars
   compileDropPrimary(blueprint, command) {
     return `ALTER TABLE ${this.wrapTable(blueprint)} DROP PRIMARY KEY`;
   }
@@ -222,6 +229,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeText(column) {
     return 'TEXT';
   }
@@ -232,6 +240,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeMediumText(column) {
     return 'MEDIUMTEXT';
   }
@@ -242,6 +251,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeLongText(column) {
     return 'LONGTEXT';
   }
@@ -252,6 +262,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeBigInteger(column) {
     return 'BIGINT';
   }
@@ -262,6 +273,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeInteger(column) {
     return 'INT';
   }
@@ -272,6 +284,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeMediumInteger(column) {
     return 'MEDIUMINT';
   }
@@ -282,6 +295,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeTinyInteger(column) {
     return 'TINYINT';
   }
@@ -292,6 +306,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeSmallInteger(column) {
     return 'SMALLINT';
   }
@@ -336,6 +351,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeBoolean(column) {
     return 'TINYINT(1)';
   }
@@ -356,6 +372,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeJson(column) {
     return 'JSON';
   }
@@ -366,6 +383,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeJsonb(column) {
     return 'JSON';
   }
@@ -376,6 +394,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeDate(column) {
     return 'DATE';
   }
@@ -406,6 +425,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeTime(column) {
     return 'TIME';
   }
@@ -416,6 +436,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeTimeTz(column) {
     return 'TIME';
   }
@@ -454,6 +475,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeBinary(column) {
     return 'BLOB';
   }
@@ -464,6 +486,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeUuid(column) {
     return 'CHAR(36)';
   }
@@ -474,6 +497,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeIpAddress(column) {
     return 'VARCHAR(45)';
   }
@@ -484,6 +508,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string
    */
+  // eslint-disable-next-line no-unused-vars
   typeMacAddress(column) {
     return 'VARCHAR(17)';
   }
@@ -495,6 +520,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyVirtualAs(blueprint, column) {
     if (column.get('virtualAs')) {
       return ` AS (${column.get('virtualAs')})`;
@@ -509,6 +535,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyStoredAs(blueprint, column) {
     if (column.get('storedAs')) {
       return ` AS (${column.get('storedAs')}) STORED`;
@@ -523,6 +550,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyUnsigned(blueprint, column) {
     if (!this.serials().includes(column.get('type'))) {
       throw new TypeError(`Unsigned modify for ${column.get('type')} is unsupported`);
@@ -540,6 +568,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyCharset(blueprint, column) {
     if (column.has('charset')) {
       if (this.serials().includes(column.get('type'))) {
@@ -557,6 +586,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyCollation(blueprint, column) {
     if (column.get('collation')) {
       if (this.serials().includes(column.get('type'))) {
@@ -574,6 +604,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyNullable(blueprint, column) {
     if (!column.get('virtualAs') && !column.get('storedAs')) {
       return column.get('nullable') ? ' NULL' : ' NOT NULL';
@@ -588,6 +619,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyDefault(blueprint, column) {
     if (column.has('default')) {
       return ` DEFAULT ${this.getDefaultValue(column.get('default'))}`;
@@ -602,6 +634,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyAutoIncrement(blueprint, column) {
     if (this.serials().includes(column.get('type')) && column.get('autoIncrement')) {
       return ' AUTO_INCREMENT PRIMARY KEY';
@@ -616,6 +649,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyFirst(blueprint, column) {
     if (column.get('first')) {
       return ' FIRST';
@@ -630,6 +664,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return string|null
    */
+  // eslint-disable-next-line no-unused-vars
   modifyAfter(blueprint, column) {
     if (column.get('after')) {
       return ` AFTER ${this.wrap(column.get('after'))}`;
@@ -645,6 +680,7 @@ export default class MysqlGrammar extends Grammar {
    * @param  {Object}  column
    * @return {string|null}
    */
+  // eslint-disable-next-line no-unused-vars
   modifyComment(blueprint, column) {
     if (column.has('comment')) {
       return ` COMMENT '${column.get('comment')}'`;
@@ -661,7 +697,7 @@ export default class MysqlGrammar extends Grammar {
    */
   wrapValue(value) {
     if (value !== '*') {
-      return '`' + value.replace('`', '``') + '`';
+      return `\`${value.replace('`', '``')}\``;
     }
 
     return value;

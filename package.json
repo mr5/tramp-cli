@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/ava --verbose"
+  },
   "dependencies": {
     "ascii-table-unicode": "^0.1.1",
     "caporal": "^0.6.0",

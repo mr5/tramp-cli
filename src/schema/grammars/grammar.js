@@ -36,7 +36,7 @@ export default class Grammar extends BaseGrammar {
     // before we can create the SQL, such as wrapping the tables and convert
     // an array of columns to comma-delimited strings for the SQL queries.
 
-    let sql = `alter table ${this.wrapTable(blueprint)} add constraint ${this.wrap(command.g('index'))} `
+    let sql = `alter table ${this.wrapTable(blueprint)} add constraint ${this.wrap(command.g('index'))} `;
     // Once we have the initial portion of the SQL statement we will add on the
     // key name, table name, and referenced columns. These will complete the
     // main portion of the SQL statement and this SQL will almost be done.
@@ -44,7 +44,7 @@ export default class Grammar extends BaseGrammar {
     if (!_.isArray(command.g('references'))) {
       references = [references];
     }
-    sql += `foreign key (${this.columnize(command.g('columns'))}) references ${this.wrapTable(command.g('on'))} (${this.columnize(references)})`
+    sql += `foreign key (${this.columnize(command.g('columns'))}) references ${this.wrapTable(command.g('on'))} (${this.columnize(references)})`;
 
     // Once we have the basic foreign key creation statement constructed we can
     // build out the syntax for what should happen on an update or delete of
@@ -63,7 +63,7 @@ export default class Grammar extends BaseGrammar {
   getColumns(blueprint) {
     const columns = [];
     blueprint.getAddedColumns().forEach((column) => {
-      const sql = this.wrap(column) + ' ' + this.getType(column);
+      const sql = `${this.wrap(column)} ${this.getType(column)}`;
       columns.push(this.addModifiers(sql, blueprint, column));
     });
 
@@ -75,13 +75,14 @@ export default class Grammar extends BaseGrammar {
   }
 
   addModifiers(sql, blueprint, column) {
+    let newSql = sql;
     this.modifiers().forEach((modifier) => {
       const method = `modify${_.upperFirst(modifier)}`;
       if (column.has([_.lowerFirst(modifier)]) && _.isFunction(this[method])) {
-        sql += this[method](blueprint, column) || '';
+        newSql += this[method](blueprint, column) || '';
       }
     });
-    return sql;
+    return newSql;
   }
 
   getCommandsByName(blueprint, name) {

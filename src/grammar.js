@@ -7,10 +7,11 @@ export default class Grammar {
   }
 
   wrapArray(values) {
-    if (!_.isArray(values)) {
-      values = [values];
+    let valueArray = values;
+    if (!_.isArray(valueArray)) {
+      valueArray = [valueArray];
     }
-    return values.map(this.wrap.bind(this));
+    return valueArray.map(this.wrap.bind(this));
   }
 
   wrapTable(table) {
@@ -43,9 +44,9 @@ export default class Grammar {
   }
 
   wrapSegments(segments) {
-    return segments.map((segment, key) => {
-      return key === 0 && segments.length > 1 ? this.wrapTable(segment) : this.wrapValue(segment);
-    }).join('.');
+    return segments.map((segment, key) =>
+      (key === 0 && segments.length > 1 ? this.wrapTable(segment) : this.wrapValue(segment))
+    ).join('.');
   }
 
   wrapValue(value) {
@@ -57,10 +58,11 @@ export default class Grammar {
   }
 
   columnize(columns) {
+    let columnArray = columns;
     if (_.isString(columns)) {
-      columns = [columns];
+      columnArray = [columns];
     }
-    return columns.map(this.wrap.bind(this)).join(', ');
+    return columnArray.map(this.wrap.bind(this)).join(', ');
   }
 
   parameterize(values) {

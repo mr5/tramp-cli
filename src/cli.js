@@ -183,7 +183,7 @@ prog.command('history', 'Show last 10 migrated migration information.').action(a
     rows
   });
   logger.info(`\n${indentString(historyTable.toString(), 2)}\n`);
-  await migrator.getConnection().close();
+  return migrator.getConnection().close();
 });
 
 process.on('unhandledRejection', printError);

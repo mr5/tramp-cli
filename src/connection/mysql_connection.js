@@ -1,5 +1,4 @@
 import mysql from 'promise-mysql';
-import { client } from 'mysql';
 import MysqlGrammar from '../schema/grammars/mysql_grammar';
 import MysqlBuilder from '../schema/mysql_builder';
 import Connection from './index';
@@ -44,7 +43,7 @@ export default class MysqlConnection extends Connection {
       if (this.dialectConnection) {
         await this.dialectConnection.destroy();
       }
-    } catch (e) {
+    } catch (e) {// eslint-disable-line
     }
   }
 }
