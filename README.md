@@ -1,4 +1,7 @@
-## A graceful database migration tool. 
+## tramp-migration
+
+> tramp-migration is a graceful migration tool for database,  with excellent interactive design.
+ No framework or program language bound.
 
 [![NPM version](https://img.shields.io/npm/v/tramp-migration.svg?style=flat-square)](http://badge.fury.io/js/tramp-migration)
 [![Build Status](https://travis-ci.org/mr5/tramp-migration.svg?branch=master)](https://travis-ci.org/mr5/tramp-migration)
