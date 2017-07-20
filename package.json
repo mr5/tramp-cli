@@ -1,11 +1,11 @@
 {
-  "name": "tramp-migration",
+  "name": "tramp-cli",
   "version": "0.1.2",
   "description": "A graceful migration tool, with excellent interactive design. No framework or program language bound.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mr5/tramp-migration.git"
+    "url": "git://github.com/mr5/tramp-cli.git"
   },
   "bin": {
     "tramp": "bin/tramp.js"
