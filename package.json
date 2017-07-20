@@ -1,6 +1,20 @@
 {
+  "name": "tramp-migration",
+  "version": "0.1.0",
+  "description": "A graceful migration tool, with excellent interactive design. No framework or program language bound.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mr5/tramp-migration.git"
+  },
+  "bin": {
+    "tramp": "bin/tramp.js"
+  },
   "scripts": {
-    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/ava --verbose"
+    "build": "gulp build",
+    "lint": "eslint src/* --ext .js",
+    "ava": "babel-node ./node_modules/.bin/ava --verbose",
+    "test": "nyc -a --reporter=lcov --reporter=text --reporter=html npm run ava"
   },
   "dependencies": {
     "ascii-table-unicode": "^0.1.1",
