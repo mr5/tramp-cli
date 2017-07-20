@@ -11,6 +11,8 @@
     "tramp": "bin/tramp.js"
   },
   "scripts": {
+    "prestart": "npm run build",
+    "prepublish": "rm -rf ./build && npm run build",
     "build": "gulp build",
     "lint": "eslint src/* --ext .js",
     "ava": "babel-node ./node_modules/.bin/ava --verbose",
