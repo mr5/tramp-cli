@@ -1,0 +1,6 @@
+*
+!build/**/*
+!bin/**/*
+!index.js
+!package.json
+!README.md

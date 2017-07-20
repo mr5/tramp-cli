@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - 6.10.3
+  - 8.0.0
+before_script:
+  - npm install
+script:
+  - npm run lint
+  - npm test
+  - npm run build
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: npm
+  email: mr5.simple@gmail.com
+  api_key:
+    secure: "McxGo4kK3S+bPy55HRDel3G3yQik4W4Rr64WaV26y2npVDmqkscMC3qg/ltbTC1rHhFOYe9EfKRug3bXujSp1BDIIyffijsySjYpXaADIRAfrPDWGhMMd5zJib4RKQ9k4isKQBt1HO8x6X9jrbYBXeTk1v7Vvluiq6Xa7Il2t61nV4YOStzWWWojh1Hwht6YdrmfcH821kcF1F0hxbGWhD/57m7W+fT+m315QBkFOT5aAK+0FKwGc2u6ahdtFD0LDjxunNiYhsYMr591OMX42x0V4LE0tsUL0CZEHGuJUhIiM4E+1zD9fo2/izpOGemaexyo5b+Sbs7zKsAXZY6P6DcVRJBaUFy77VGZVLClRARWjIGmgAlUYXZu0oJW54SyCmErLqQJFcVjTN5ysR0OG6cPL4dKmEeB3CD5xDbMmD7BpAtaf9ZOMCOHHyqKLrgu3Hp8rS7tliRJQuwUovv6uzOpOm2aCJGsuaPlpuJ6m3ri6pRRArI+B11Di4s/xaKWFLyItSnhohgDpr+ZiyMeUyEhanKWUm7HusEfEQISgxYWT/Gx6HWFd2C/dxLiui0hyjJ/cAGTjX3ihjyYN65tVKZxcKLJnakdEKWMdV5a1lEjVkfdzGWPtoRPaCm9HwybPTlXuLTNThA4JbRtRLc+rwn8fQAK3gGQhOZ0vqdAcjU="
+  on:
+    tags: true
