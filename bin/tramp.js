@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require(`${__dirname}/build/cli`);
+require(`${__dirname}/../build/cli`);
