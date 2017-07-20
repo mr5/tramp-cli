@@ -1,5 +1,9 @@
 import globby from 'globby';
 import _ from 'lodash';
+import chalk from 'chalk';
+import indentString from 'indent-string';
+import wrapAnsi from 'wrap-ansi';
+import emphasize from 'emphasize';
 import Builder from '../schema/builder';
 import MysqlConnection from '../connection/mysql_connection';
 
@@ -37,10 +41,10 @@ export default class Migrator {
       ).length > 0;
   }
 
-  async markAsMigrated(file, ranSql = '') {
+  async markAsMigrated(migration, ranSql = '') {
     await this.getConnection().query(
-      'INSERT INTO tramp_migrations (migration, ran_sql) VALUES (?, ?);',
-      [file, ranSql]
+      'INSERT INTO tramp_migrations (migration, path, ran_sql) VALUES (?, ?, ?);',
+      [migration.file, this.relativelyPath(migration.path), ranSql]
     );
   }
 
@@ -59,6 +63,7 @@ export default class Migrator {
       this.connection.getSchemaBuilder().create('tramp_migrations', (table) => {
         table.increments('id');
         table.string('migration').unique();
+        table.string('path');
         table.string('authors').default('');
         table.text('ran_sql');
         table.dateTime('ran_at').default(
@@ -67,6 +72,33 @@ export default class Migrator {
       });
       await this.connection.getSchemaBuilder().execute();
     }
+  }
+
+  async dumpPreview(logger, opts) {
+    const pendingMigrations = await this.pendingMigrations();
+    if (pendingMigrations.length <= 0) {
+      logger.info(chalk.yellow('\n  No pending migrations to migrate.'), '\n');
+      return 0;
+    }
+    logger.info(chalk.yellow(`\n  -- Found ${chalk.red(pendingMigrations.length)} pending ${pendingMigrations.length > 1 ? 'migrations' : 'migration'}.`));
+
+    logger.info('');
+    for (const migration of pendingMigrations) {
+      logger.info(indentString(
+        `-- ${migration.file}${this.paths.length > 1 ? chalk.grey(` [ in path '${this.relativelyPath(migration.path)}' ]`
+        ) : ''}:`, 2));
+      logger.info('');
+      if (opts.summary === undefined) {
+        this.getMigrationSql(migration).forEach((sql) => {
+          let msg = wrapAnsi(sql, Math.min(process.stdout.columns - 8, 150), { wordWrap: true });
+          msg = indentString(msg, 6);
+          msg = emphasize.highlight('sql', msg).value;
+          logger.info(msg);
+          logger.info('');
+        });
+      }
+    }
+    return pendingMigrations.length;
   }
 
   addPath(path) {

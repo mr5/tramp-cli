@@ -11,7 +11,7 @@ const paths = {
 };
 
 gulp.task('build', () => {
-  gulp.src(['./src/**/*.json', './src/**/*.sql']).pipe(gulp.dest('./build'));
+  gulp.src(['./src/**/*.json', './src/**/*.sql', './src/**/*.stub']).pipe(gulp.dest('./build'));
   return gulp
     .src(paths.es6)
     .pipe(sourceMaps.init())
