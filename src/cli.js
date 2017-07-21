@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import emphasize from 'emphasize';
 import Listr from 'listr';
 import listrRenderer from 'listr-overwrite-renderer';
-import wrapAnsi from 'wrap-ansi';
 import indentString from 'indent-string';
 import inquirer from 'inquirer';
 import moment from 'moment-timezone';
@@ -18,7 +17,7 @@ const printError = (err) => {
 };
 const printMessage = (message) => {
   console.log(`\n${indentString(message, 4)}\n`);
-}
+};
 const rcFilePath = `${process.cwd()}/.tramprc.js`;
 let config = {};
 let sharedMigrator;
@@ -35,7 +34,8 @@ const getMigrator = () => {
 };
 
 const highlight = (str, lang = 'sql') => emphasize.highlight(lang, str).value;
-prog.command('init', 'generate `..tramprc.js` file')
+prog.name('tramp').version(require(`${__dirname}/../package.json`).version);
+prog.command('init', 'generate `.tramprc.js` file')
   .action((args, options, logger) => {
     if (fs.existsSync(rcFilePath)) {
       printError({ message: `File '.tramprc.js' already exists. Current working dir is ${process.cwd()}` });
@@ -153,7 +153,7 @@ prog.command('migrate', 'Run the database migrations.')
       migrator.getConnection().close();
     });
   });
-prog.command('preview')
+prog.command('preview', 'Preview pending migrations')
   .option('--summary', 'Do not display SQL')
   .action(async (args, opts, logger) => {
     const migrator = getMigrator();
@@ -167,13 +167,13 @@ prog.command('preview')
     }
     await migrator.getConnection().close();
   });
-prog.command('history', 'Show last 10 migrated migration information.').action(async (args, opts, logger) => {
+prog.command('history', 'Show last 20 migrated migration information.').action(async (args, opts, logger) => {
   const migrator = getMigrator();
   await migrator.initialize();
   const migratedMigrations =
     await migrator
       .getConnection()
-      .query(`SELECT * FROM ${migrator.wrapTable('tramp_migrations')} ORDER BY ran_at DESC LIMIT 10`);
+      .query(`SELECT * FROM ${migrator.wrapTable('tramp_migrations')} ORDER BY ran_at DESC LIMIT 20`);
   if (migratedMigrations.length <= 0) {
     await migrator.getConnection().close();
     return logger.info(`\n${indentString(chalk.yellow('No migrations migrated yet.'), 2)}\n`);
@@ -183,13 +183,13 @@ prog.command('history', 'Show last 10 migrated migration information.').action(a
     rows.push([
       migratedMigration.id,
       chalk.gray(migratedMigration.path),
-      migratedMigration.migration,
+      `${migratedMigration.migration}${migratedMigration.ran_sql === 'skipped' ? chalk.gray(' [skipped]') : ''}`,
       moment(migratedMigration.ran_at).format('YYYY-MM-DD HH:mm:ss'),
       migratedMigration.authors
     ]);
   }
   const historyTable = new AsciiTable().fromJSON({
-    title: chalk.bold('Last 10 migrated migrations'),
+    title: chalk.bold('Last 20 migrated migrations'),
     heading: ['ID', 'PATH', 'MIGRATION', 'RAN AT', 'AUTHORS'].map(head => chalk.yellow(head)),
     rows
   });

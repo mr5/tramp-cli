@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import indentString from 'indent-string';
 import wrapAnsi from 'wrap-ansi';
 import emphasize from 'emphasize';
+import { spawnSync, execSync, exec } from 'child_process';
 import Builder from '../schema/builder';
 import MysqlConnection from '../connection/mysql_connection';
 
@@ -42,9 +43,10 @@ export default class Migrator {
   }
 
   async markAsMigrated(migration, ranSql = '') {
+    const authors = await this.getAuthors(migration);
     await this.getConnection().query(
-      'INSERT INTO tramp_migrations (migration, path, ran_sql) VALUES (?, ?, ?);',
-      [migration.file, this.relativelyPath(migration.path), ranSql]
+      'INSERT INTO tramp_migrations (migration, path, ran_sql, authors) VALUES (?, ?, ?, ?);',
+      [migration.file, this.relativelyPath(migration.path), ranSql, authors]
     );
   }
 
@@ -84,13 +86,14 @@ export default class Migrator {
 
     logger.info('');
     for (const migration of pendingMigrations) {
+      const authors = await this.getAuthors(migration);
       logger.info(indentString(
-        `-- ${migration.file}${this.paths.length > 1 ? chalk.grey(` [ in path '${this.relativelyPath(migration.path)}' ]`
+        `-- ${migration.file} ${authors ? chalk.gray(`by ${authors}`) : ''}${this.paths.length > 1 ? chalk.grey(` in ${this.relativelyPath(migration.path)}`
         ) : ''}:`, 2));
       logger.info('');
       if (opts.summary === undefined) {
         this.getMigrationSql(migration).forEach((sql) => {
-          let msg = wrapAnsi(sql, Math.min(process.stdout.columns - 8, 150), { wordWrap: true });
+          let msg = wrapAnsi(sql, Math.min(process.stdout.columns - 8, 200), { wordWrap: true });
           msg = indentString(msg, 6);
           msg = emphasize.highlight('sql', msg).value;
           logger.info(msg);
@@ -105,6 +108,21 @@ export default class Migrator {
     if (!this.paths.includes(path)) {
       this.paths.push(path);
     }
+  }
+
+  getAuthors(migration) {
+    return new Promise((resolve) => {
+      exec(
+        `git blame --line-porcelain '${migration.path}/${migration.file}' | sed -n 's/^author //p' | sort | uniq -c | sort -rn | awk '{print $2}' | paste -s -d"," -`,
+        (error, stdout) => {
+          if (error) {
+            resolve('');
+          } else {
+            resolve(stdout.toString().trim());
+          }
+        }
+      );
+    });
   }
 
   absolutelyPath(path) {
