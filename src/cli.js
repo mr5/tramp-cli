@@ -173,7 +173,7 @@ prog.command('history', 'Show last 20 migrated migration information.').action(a
   const migratedMigrations =
     await migrator
       .getConnection()
-      .query(`SELECT * FROM ${migrator.wrapTable('tramp_migrations')} ORDER BY ran_at DESC LIMIT 20`);
+      .query(`SELECT * FROM ${migrator.wrapTable('tramp_migrations')} ORDER BY ran_at DESC,migration DESC LIMIT 20`);
   if (migratedMigrations.length <= 0) {
     await migrator.getConnection().close();
     return logger.info(`\n${indentString(chalk.yellow('No migrations migrated yet.'), 2)}\n`);
