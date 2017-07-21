@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import indentString from 'indent-string';
 import wrapAnsi from 'wrap-ansi';
 import emphasize from 'emphasize';
-import { spawnSync, execSync, exec } from 'child_process';
+import { exec } from 'child_process';
 import Builder from '../schema/builder';
 import MysqlConnection from '../connection/mysql_connection';
 

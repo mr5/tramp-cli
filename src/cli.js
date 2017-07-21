@@ -34,9 +34,10 @@ const getMigrator = () => {
 };
 
 const highlight = (str, lang = 'sql') => emphasize.highlight(lang, str).value;
+// eslint-disable-next-line
 prog.name('tramp').version(require(`${__dirname}/../package.json`).version);
 prog.command('init', 'generate `.tramprc.js` file')
-  .action((args, options, logger) => {
+  .action(() => {
     if (fs.existsSync(rcFilePath)) {
       printError({ message: `File '.tramprc.js' already exists. Current working dir is ${process.cwd()}` });
       process.exit(1);
