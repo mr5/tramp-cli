@@ -71,7 +71,7 @@ Migrations are like version control for your database, allowing your team to eas
 <a name="Initialization"></a>
 ## Initialization
 
-Run `.tramprc.js` in your project root path will generate a configuration file of tramp. It looks like below:
+Run `tramp init` in your project root path will generate a configuration file of tramp. It looks like below:
 
 ```javascript
 module.exports = {
