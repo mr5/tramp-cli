@@ -328,7 +328,7 @@ Modifier  | Description
 The `change` method allows you to modify some existing column types to a new type or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
 ```javascript
-    schema::table('users', (table) => {
+    schema.table('users', (table) => {
         table.string('name', 50)->change();
     });
 ```
