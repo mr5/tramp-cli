@@ -8,8 +8,7 @@
 
 
 Tramp is a graceful migration tool for database,  with excellent interactive design.
- No framework or program language bound. It's inspired by [laravel](https://laravel.com/docs/5.4/migrations).
-
+ No framework or program language bound. It's inspired by [laravel](https://laravel.com/docs/5.4/migrations), mostly apis of Tramp looks like laravel migration.
 
 - [Installation](#installation)
 - [Introduction](#introduction)
@@ -53,7 +52,7 @@ Run `tramp` to list commands:
      make <name>         Make a new migration file                   
      migrate             Run the database migrations.                
      preview             Preview pending migrations                  
-     history             Show last 20 migrated migration information.
+     history             Show last 20 migrated migrations.
      help <command>      Display help for a specific command         
 
    GLOBAL OPTIONS
@@ -301,9 +300,11 @@ Command  | Description
 
 In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
 
-    Schema::table('users', function (Blueprint $table) {
+```javascript
+    schema.table('users', (table) => {
         table.string('email')->nullable();
     });
+```
 
 Below is a list of all the available column modifiers. This list does not include the [index modifiers](#creating-indexes):
 
@@ -311,7 +312,7 @@ Modifier  | Description
 ------------- | -------------
 `.after('column')`  |  Place the column "after" another column (MySQL Only)
 `.comment('my comment')`  |  Add a comment to a column
-`.default($value)`  |  Specify a "default" value for the column
+`.default(value)`  |  Specify a "default" value for the column
 `.first()`  |  Place the column "first" in the table (MySQL Only)
 `.nullable()`  |  Allow NULL values to be inserted into the column
 `.storedAs(expression)`  |  Create a stored generated column (MySQL Only)
@@ -354,11 +355,13 @@ To rename a column, you may use the `renameColumn` method on the Schema builder:
 ### Dropping Columns
 
 To drop a column, use the `dropColumn` method on the Schema builder:
+
 ```javascript
-    Schema::table('users', function (Blueprint $table) {
+    schema.table('users', (table) => {
         table.dropColumn('votes');
     });
 ```
+
 You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
 
 ```javascript

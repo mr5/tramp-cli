@@ -168,7 +168,7 @@ prog.command('preview', 'Preview pending migrations')
     }
     await migrator.getConnection().close();
   });
-prog.command('history', 'Show last 20 migrated migration information.').action(async (args, opts, logger) => {
+prog.command('history', 'Show last 20 migrated migration.').action(async (args, opts, logger) => {
   const migrator = getMigrator();
   await migrator.initialize();
   const migratedMigrations =
