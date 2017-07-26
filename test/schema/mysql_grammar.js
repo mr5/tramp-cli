@@ -60,14 +60,14 @@ test('compileAdd', (t) => {
   blueprint.unsignedInteger('created_at').default(0).comment('created at timestamp');
   t.is(
     mysqlGrammar.compileAdd(blueprint),
-    "ALTER TABLE `dummy_table` ADD `created_at` INT UNSIGNED DEFAULT '0' COMMENT 'created at timestamp'"
+    "ALTER TABLE `dummy_table` ADD `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'created at timestamp'"
   );
   const blueprintMultipleColumns = new Blueprint('dummy_table');
   blueprintMultipleColumns.unsignedInteger('created_at').default(0).comment('created at timestamp');
   blueprintMultipleColumns.string('username').comment('username of user');
   t.is(
     mysqlGrammar.compileAdd(blueprintMultipleColumns),
-    "ALTER TABLE `dummy_table` ADD `created_at` INT UNSIGNED DEFAULT '0' COMMENT 'created at timestamp', ADD `username` VARCHAR(255) COMMENT 'username of user'"
+    "ALTER TABLE `dummy_table` ADD `created_at` INT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'created at timestamp', ADD `username` VARCHAR(255) NOT NULL COMMENT 'username of user'"
   );
 });
 test('compilePrimary', (t) => {
