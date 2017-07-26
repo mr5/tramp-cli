@@ -144,15 +144,6 @@ Within both of these methods you may use the tramp schema builder to expressivel
         }
     };
 ```
-
-<a name="running-migrations"></a>
-## Running Migrations
-
-To run all of your outstanding migrations, execute the `migrate` command:
-```shell
-    tramp migrate
-```
-
 <a name="preview-migrations"></a>
 ## Preview Migrations
 
@@ -163,6 +154,14 @@ To preview all of your outstanding migrations, execute the `preview` command:
 ```
 
 Tramp will print the SQL statements of all outstanding migrations, but do nothing which effect database.
+
+<a name="running-migrations"></a>
+## Running Migrations
+
+To run all of your outstanding migrations, execute the `migrate` command:
+```shell
+    tramp migrate
+```
 
 #### Forcing Migrations To Run In Production
 
