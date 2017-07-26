@@ -179,7 +179,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {integer}    length
-   * @return {Object}
+   * @return {Column}
    */
   string(column, length = null) {
     return this.addColumn('string', column, { length: length || Builder.defaultStringLength });
@@ -189,7 +189,7 @@ export default class Blueprint {
    * Create a new text column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   text(column) {
     return this.addColumn('text', column);
@@ -199,7 +199,7 @@ export default class Blueprint {
    * Create a new medium text column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   mediumText(column) {
     return this.addColumn('mediumText', column);
@@ -209,7 +209,7 @@ export default class Blueprint {
    * Create a new long text column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   longText(column) {
     return this.addColumn('longText', column);
@@ -221,7 +221,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
    * @param  {boolean}    unsigned
-   * @return {Object}
+   * @return {Column}
    */
   integer(column, autoIncrement = false, unsigned = false) {
     return this.addColumn('integer', column, { autoIncrement, unsigned });
@@ -233,7 +233,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
    * @param  {boolean}    unsigned
-   * @return {Object}
+   * @return {Column}
    */
   tinyInteger(column, autoIncrement = false, unsigned = false) {
     return this.addColumn('tinyInteger', column, { autoIncrement, unsigned });
@@ -245,7 +245,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
    * @param  {boolean}    unsigned
-   * @return {Object}
+   * @return {Column}
    */
   smallInteger(column, autoIncrement = false, unsigned = false) {
     return this.addColumn('smallInteger', column, { autoIncrement, unsigned });
@@ -257,7 +257,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
    * @param  {boolean}    unsigned
-   * @return {Object}
+   * @return {Column}
    */
   mediumInteger(column, autoIncrement = false, unsigned = false) {
     return this.addColumn('mediumInteger', column, { autoIncrement, unsigned });
@@ -269,7 +269,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
    * @param  {boolean}    unsigned
-   * @return {Object}
+   * @return {Column}
    */
   bigInteger(column, autoIncrement = false, unsigned = false) {
     return this.addColumn('bigInteger', column, { autoIncrement, unsigned });
@@ -280,7 +280,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
-   * @return {Object}
+   * @return {Column}
    */
   unsignedInteger(column, autoIncrement = false) {
     return this.integer(column, autoIncrement, true);
@@ -291,7 +291,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
-   * @return {Object}
+   * @return {Column}
    */
   unsignedTinyInteger(column, autoIncrement = false) {
     return this.tinyInteger(column, autoIncrement, true);
@@ -302,7 +302,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
-   * @return {Object}
+   * @return {Column}
    */
   unsignedSmallInteger(column, autoIncrement = false) {
     return this.smallInteger(column, autoIncrement, true);
@@ -324,7 +324,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {boolean}    autoIncrement
-   * @return {Object}
+   * @return {Column}
    */
   unsignedBigInteger(column, autoIncrement = false) {
     return this.bigInteger(column, autoIncrement, true);
@@ -336,7 +336,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {number}    total
    * @param  {number}    places
-   * @return {Object}
+   * @return {Column}
    */
   float(column, total = 8, places = 2) {
     return this.addColumn('float', column, { total, places });
@@ -348,7 +348,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {number|null}    total
    * @param  {number|null} places
-   * @return {Object}
+   * @return {Column}
    */
   double(column, total = null, places = null) {
     return this.addColumn('double', column, { total, places });
@@ -360,7 +360,7 @@ export default class Blueprint {
    * @param  {string}    column
    * @param  {number}    total
    * @param  {number}    places
-   * @return {Object}
+   * @return {Column}
    */
   decimal(column, total = 8, places = 2) {
     return this.addColumn('decimal', column, { total, places });
@@ -370,7 +370,7 @@ export default class Blueprint {
    * Create a new boolean column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   boolean(column) {
     return this.addColumn('boolean', column);
@@ -381,7 +381,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {Array}   allowed
-   * @return {Object}
+   * @return {Column}
    */
   enum(column, allowed) {
     return this.addColumn('enum', column, { allowed });
@@ -391,7 +391,7 @@ export default class Blueprint {
    * Create a new json column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   json(column) {
     return this.addColumn('json', column);
@@ -401,7 +401,7 @@ export default class Blueprint {
    * Create a new jsonb column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   jsonb(column) {
     return this.addColumn('jsonb', column);
@@ -411,7 +411,7 @@ export default class Blueprint {
    * Create a new date column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   date(column) {
     return this.addColumn('date', column);
@@ -422,7 +422,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {number}   precision
-   * @return {Object}
+   * @return {Column}
    */
   dateTime(column, precision = 0) {
     return this.addColumn('dateTime', column, { precision });
@@ -433,7 +433,7 @@ export default class Blueprint {
    *
    * @param  {string}    column
    * @param  {number}   precision
-   * @return {Object}
+   * @return {Column}
    */
   dateTimeTz(column, precision = 0) {
     return this.addColumn('dateTimeTz', column, { precision });
@@ -443,7 +443,7 @@ export default class Blueprint {
    * Create a new time column on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   time(column) {
     return this.addColumn('time', column);
@@ -453,12 +453,17 @@ export default class Blueprint {
    * Create a new time column (with time zone) on the table.
    *
    * @param  {string}    column
-   * @return {Object}
+   * @return {Column}
    */
   timeTz(column) {
     return this.addColumn('timeTz', column);
   }
 
+  /**
+   *
+   * @param column
+   * @returns {Column}
+   */
   binary(column) {
     return this.addColumn('binary', column);
   }
@@ -504,7 +509,7 @@ export default class Blueprint {
 
   addColumn(type, name, parameters = {}) {
     const column = new Column(Object.assign({
-      type, name
+      type, name, nullable: false
     }, parameters));
     this.columns.push(column);
     return column;
