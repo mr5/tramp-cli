@@ -306,27 +306,22 @@ Modifier  | Description
 <a name="modifying-columns"></a>
 ### Modifying Columns
 
-#### Prerequisites
-
-Before modifying a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file. The Doctrine DBAL library is used to determine the current state of the column and create the SQL queries needed to make the specified adjustments to the column:
-
-    composer require doctrine/dbal
-
 #### Updating Column Attributes
 
 The `change` method allows you to modify some existing column types to a new type or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
 
-    schema::table('users', function (Blueprint $table) {
+```javascript
+    schema::table('users', (table) => {
         table.string('name', 50)->change();
     });
+```
 
 We could also modify a column to be nullable:
-
-    Schema::table('users', function (Blueprint $table) {
+```javascript
+    schema.table('users', (table) => {
         table.string('name', 50)->nullable()->change();
     });
-
-> {note} The following column types can not be "changed": char, double, enum, mediumInteger, timestamp, tinyInteger, ipAddress, json, jsonb, macAddress, mediumIncrements, morphs, nullableMorphs, nullableTimestamps, softDeletes, timeTz, timestampTz, timestamps, timestampsTz, unsignedMediumInteger, unsignedTinyInteger, uuid.
+```
 
 <a name="renaming-columns"></a>
 #### Renaming Columns
@@ -350,9 +345,11 @@ To drop a column, use the `dropColumn` method on the Schema builder:
 ```
 You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
 
+```javascript
     schema.table('users', (table) => {
         table.dropColumn(['votes', 'avatar', 'location']);
     });
+```
 
 > {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
 
