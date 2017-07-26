@@ -16,6 +16,7 @@ Tramp is a graceful migration tool for database,  with excellent interactive des
 - [Initialization](#Initialization)
 - [Generating Migrations](#generating-migrations)
 - [Migration Structure](#migration-structure)
+- [Preview Migrations](#preview-migrations)
 - [Running Migrations](#running-migrations)
     - [Rolling Back Migrations](#rolling-back-migrations)
 - [Tables](#tables)
@@ -153,9 +154,21 @@ To run all of your outstanding migrations, execute the `migrate` command:
     tramp migrate
 ```
 
+<a name="preview-migrations"></a>
+## Preview Migrations
+
+To preview all of your outstanding migrations, execute the `preview` command:
+
+```shell
+    tramp preview
+```
+
+Tramp will print the SQL statements of all outstanding migrations, but do nothing which effect database.
+
 #### Forcing Migrations To Run In Production
 
-Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag, it's very useful for unit test:
+
 ```shell
     tramp migrate --force
 ```
@@ -164,10 +177,13 @@ Some migration operations are destructive, which means they may cause you to los
 ### Rolling Back Migrations
 
 To rollback the latest migration operation, you may use the `rollback` command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+
 ```shell
     tramp rollback
 ```
+
 You may rollback a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will rollback the last five migrations:
+
 ```shell
     tramp rollback --step=5
 ```
@@ -229,11 +245,11 @@ Before renaming a table, you should verify that any foreign key constraints on t
 ### Creating Columns
 
 The `table` method on the `schema` may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance you may use to add columns to the table:
-
+```javascript
     schema.table('users', (table) => {
         table.string('email');
     });
-
+```
 #### Available Column Types
 
 Of course, the schema builder contains a variety of column types that you may specify when building your tables:
