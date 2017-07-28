@@ -7,8 +7,9 @@ import Column from '../../src/schema/column';
 test('compileCreateEncoding', (t) => {
   const mysqlGrammar = new MysqlGrammar();
   const blueprint = new Blueprint('dummy_table');
-  blueprint.charset = 'utf8';
-  blueprint.collation = 'utf8_bin';
+  blueprint.create();
+  blueprint.charset('utf8');
+  blueprint.collation('utf8_bin');
   t.is(
     mysqlGrammar.compileCreateEncoding('', null, blueprint),
     ' DEFAULT CHARACTER SET utf8 COLLATE utf8_bin'
@@ -16,8 +17,8 @@ test('compileCreateEncoding', (t) => {
   const gbkConnection = new MysqlConnection({
     charset: 'gbk'
   });
-  blueprint.charset = null;
-  blueprint.collation = null;
+  blueprint.charset(null);
+  blueprint.collation(null);
   t.is(
     mysqlGrammar.compileCreateEncoding('', gbkConnection, blueprint),
     ' DEFAULT CHARACTER SET gbk'
@@ -39,7 +40,8 @@ test('compileCreateEncoding', (t) => {
 test('compileCreateEngine', (t) => {
   const mysqlGrammar = new MysqlGrammar();
   const blueprint = new Blueprint('dummy_table');
-  blueprint.engine = 'InnoDB';
+  blueprint.create();
+  blueprint.engine('InnoDB');
   t.is(
     mysqlGrammar.compileCreateEngine('', null, blueprint),
     ' ENGINE = InnoDB'
@@ -47,7 +49,7 @@ test('compileCreateEngine', (t) => {
   const myISAMConnection = new MysqlConnection({
     engine: 'MyISAM'
   });
-  blueprint.engine = null;
+  blueprint.engine(null);
   t.is(
     mysqlGrammar.compileCreateEngine('', myISAMConnection, blueprint),
     ' ENGINE = MyISAM'
