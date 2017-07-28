@@ -1,6 +1,6 @@
 {
   "name": "tramp-cli",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A graceful migration tool, with excellent interactive design. No framework or program language bound.",
   "license": "MIT",
   "repository": {
