@@ -7,12 +7,45 @@ export default class Blueprint {
     this.table = table;
     this.columns = [];
     this.commands = [];
-    this.engine = null;
-    this.charset = null;
-    this.collation = null;
+    this.tableEngine = null;
+    this.tableCharset = null;
+    this.tableCollation = null;
+    this.tableComment = null;
     this.temporary = false;
     if (callback) {
       callback(this);
+    }
+  }
+
+  engine(engine) {
+    if (this.creating()) {
+      this.tableEngine = engine;
+    } else {
+      throw new Error('Cannot modify engine of table yet.');
+    }
+  }
+
+  collation(collation) {
+    if (this.creating()) {
+      this.tableCollation = collation;
+    } else {
+      throw new Error('Cannot modify collation of table yet.');
+    }
+  }
+
+  charset(charset) {
+    if (this.creating()) {
+      this.tableCharset = charset;
+    } else {
+      throw new Error('Cannot modify charset of table yet.');
+    }
+  }
+
+  comment(comment) {
+    if (this.creating()) {
+      this.tableComment = comment;
+    } else {
+      this.addCommand('comment', { comment });
     }
   }
 
@@ -22,7 +55,10 @@ export default class Blueprint {
     this.commands.forEach((command) => {
       const method = `compile${_.upperFirst(command.get('name'))}`;
       if (_.isFunction(connection.getSchemaGrammar()[method])) {
-        statements.push(`${connection.getSchemaGrammar()[method](this, command, connection)};`);
+        const sql = connection.getSchemaGrammar()[method](this, command, connection);
+        if (sql) {
+          statements.push(sql);
+        }
       }
     });
     return statements;

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import Column from '../column';
 import Grammar from './grammar';
 
 export default class MysqlGrammar extends Grammar {
@@ -58,6 +59,21 @@ export default class MysqlGrammar extends Grammar {
     return sql;
   }
 
+  /**
+   * Get the SQL for a "comment" table command.
+   *
+   * @param  {Blueprint}  blueprint
+   * @param  {Column}  command
+   * @return {string|null}
+   */
+  // eslint-disable-next-line no-unused-vars
+  compileComment(blueprint, command) {
+    const comment = this.modifyComment(blueprint, command);
+    return comment === null
+      ? null
+      : `ALTER TABLE ${blueprint.getTable()} ${comment}`;
+  }
+
   // eslint-disable-next-line no-unused-vars
   compileRenameColumn(blueprint, command, connection) {
     return `/* Rename column: ${command.get('from')}, NOTICE: NULL means kept property */
@@ -99,25 +115,27 @@ export default class MysqlGrammar extends Grammar {
     // Finally, we will append the engine configuration onto this SQL statement as
     // the final thing we do before returning this finished SQL. Once this gets
     // added the query will be ready to execute against the real connections.
-    return this.compileCreateEngine(
+    sql = this.compileCreateEngine(
       sql, connection, blueprint
     );
+
+    return this.compileCreateComment(sql, connection, blueprint);
   }
 
   compileCreateTable(blueprint) {
-    return `${blueprint.temporary ? 'CREATE TEMPORARY' : 'CREATE'} TABLE ${this.wrapTable(blueprint)} (${this.getColumns(blueprint).join(', ')})`;
+    return `${blueprint.temporary ? 'CREATE TEMPORARY' : 'CREATE'} TABLE ${this.wrapTable(blueprint)} (${this.getColumns(blueprint).join(', ')}) ${this.modifyComment(null, { comment: blueprint.comment })}`;
   }
 
   compileCreateEncoding(sql, connection, blueprint) {
     let newSql = sql;
-    if (blueprint.charset) {
-      newSql += ` DEFAULT CHARACTER SET ${blueprint.charset}`;
+    if (blueprint.tableCharset) {
+      newSql += ` DEFAULT CHARACTER SET ${blueprint.tableCharset}`;
     } else if (connection.getConfig('charset')) {
       newSql += ` DEFAULT CHARACTER SET ${connection.getConfig('charset')}`;
     }
 
-    if (blueprint.collation) {
-      newSql += ` COLLATE ${blueprint.collation}`;
+    if (blueprint.tableCollation) {
+      newSql += ` COLLATE ${blueprint.tableCollation}`;
     } else if (connection.getConfig('collation')) {
       newSql += ` COLLATE ${connection.getConfig('collation')}`;
     }
@@ -125,9 +143,18 @@ export default class MysqlGrammar extends Grammar {
     return newSql;
   }
 
+  compileCreateComment(sql, connection, blueprint) {
+    let newSql = sql;
+    if (blueprint.comment !== null) {
+      newSql += ` ${this.modifyComment(blueprint, new Column({ comment: blueprint.tableComment }))}`;
+    }
+
+    return newSql;
+  }
+
   compileCreateEngine(sql, connection, blueprint) {
-    if (blueprint.engine) {
-      return `${sql} ENGINE = ${blueprint.engine}`;
+    if (blueprint.tableEngine) {
+      return `${sql} ENGINE = ${blueprint.tableEngine}`;
     } else if (connection.getConfig('engine')) {
       return `${sql} ENGINE = ${connection.getConfig('engine')}`;
     }
