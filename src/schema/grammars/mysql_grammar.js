@@ -123,7 +123,7 @@ export default class MysqlGrammar extends Grammar {
   }
 
   compileCreateTable(blueprint) {
-    return `${blueprint.temporary ? 'CREATE TEMPORARY' : 'CREATE'} TABLE ${this.wrapTable(blueprint)} (${this.getColumns(blueprint).join(', ')}) ${this.modifyComment(null, { comment: blueprint.comment })}`;
+    return `${blueprint.temporary ? 'CREATE TEMPORARY' : 'CREATE'} TABLE ${this.wrapTable(blueprint)} (${this.getColumns(blueprint).join(', ')}) ${this.modifyComment(null, new Column({ comment: blueprint.tableComment }))}`;
   }
 
   compileCreateEncoding(sql, connection, blueprint) {
@@ -145,7 +145,7 @@ export default class MysqlGrammar extends Grammar {
 
   compileCreateComment(sql, connection, blueprint) {
     let newSql = sql;
-    if (blueprint.comment !== null) {
+    if (blueprint.tableComment !== null) {
       newSql += ` ${this.modifyComment(blueprint, new Column({ comment: blueprint.tableComment }))}`;
     }
 

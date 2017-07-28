@@ -14,6 +14,9 @@ import Migrator from './migrations/migrator';
 
 const printError = (err) => {
   console.error(`\n${indentString(chalk.red(err.message), 4)}\n`);
+  if (err.stack) {
+    console.error(`\n${indentString(chalk.gray(err.stack), 4)}\n`);
+  }
 };
 const printMessage = (message) => {
   console.log(`\n${indentString(message, 4)}\n`);
