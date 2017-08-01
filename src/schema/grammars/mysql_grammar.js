@@ -119,7 +119,7 @@ export default class MysqlGrammar extends Grammar {
       sql, connection, blueprint
     );
 
-    return this.compileCreateComment(sql, connection, blueprint);
+    return sql;
   }
 
   compileCreateTable(blueprint) {
