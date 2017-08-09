@@ -61,6 +61,11 @@ export default class Column {
     return this;
   }
 
+  before(columnName) {
+    this.set('before', columnName);
+    return this;
+  }
+
   default(value) {
     this.s('default', value);
     return this;
