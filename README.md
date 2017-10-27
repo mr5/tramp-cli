@@ -301,7 +301,7 @@ In addition to the column types listed above, there are several column "modifier
 
 ```javascript
     schema.table('users', (table) => {
-        table.string('email')->nullable();
+        table.string('email').nullable();
     });
 ```
 
@@ -328,14 +328,14 @@ The `change` method allows you to modify some existing column types to a new typ
 
 ```javascript
     schema.table('users', (table) => {
-        table.string('name', 50)->change();
+        table.string('name', 50).change();
     });
 ```
 
 We could also modify a column to be nullable:
 ```javascript
     schema.table('users', (table) => {
-        table.string('name', 50)->nullable()->change();
+        table.string('name', 50).nullable().change();
     });
 ```
 
@@ -380,7 +380,7 @@ You may drop multiple columns from a table by passing an array of column names t
 The schema builder supports several types of indexes. First, let's look at an example that specifies a column's values should be unique. To create the index, we can simply chain the `unique` method onto the column definition:
 
 ```javascript
-    table.string('email')->unique();
+    table.string('email').unique();
 ```
 
 Alternatively, you may create the index after defining the column. For example:
@@ -438,9 +438,9 @@ Tramp also provides support for creating foreign key constraints, which are used
 
 ```javascript
     schema.table('posts', (table) => {
-        table.integer('user_id')->unsigned();
+        table.integer('user_id').unsigned();
 
-        table.foreign('user_id')->references('id')->on('users');
+        table.foreign('user_id').references('id').on('users');
     });
 ```
 
@@ -448,8 +448,8 @@ You may also specify the desired action for the "on delete" and "on update" prop
 
 ```javascript
     table.foreign('user_id')
-          ->references('id')->on('users')
-          ->onDelete('cascade');
+          .references('id').on('users')
+          .onDelete('cascade');
 ```
 
 To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "_foreign":
