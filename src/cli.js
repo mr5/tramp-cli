@@ -84,7 +84,7 @@ prog.command('make', 'Make a new migration file')
       process.exit(0);
     } catch (e) {
       logger.warn(chalk.yellow(
-        `\nOpen migration file in editor failed with error: "${chalk.red(e)}". But don\'t worry, nothing went wrong, you can just open it manually.\n`
+        `\nOpen migration file in editor failed with error: "${chalk.red(e)}". But don't worry, nothing went wrong, you can just open it manually.\n`
       ));
     }
   });

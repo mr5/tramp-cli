@@ -35,7 +35,9 @@ export default class Migrator {
     }
     const editor = openInEditor.configure({
       editor: this.getConfig('editor')
-    }, e => console.error(e));
+    }, (e) => {
+      throw e;
+    });
     return editor.open(`${file}:${line}:${col}`);
   }
 
