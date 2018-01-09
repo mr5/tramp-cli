@@ -83,6 +83,7 @@ module.exports = {
     password: 'root',
     database: 'databasename'
   },
+  editor: 'webstorm',
   paths: [
     'migrations'
   ]
@@ -93,8 +94,22 @@ module.exports = {
 // const child_process = require('child_process');
 // module.exports = JSON.parse(child_process.execSync('./project_cli dump_config'));
 ```
+The `editor` option is use for migration file automatic opening after created, if set as `webstorm`, your migration file will open with webstorm automatically after it created.
 
-It is a normal node.js file. You can use all nodej.s API in `.tramprc.js`. You can read configuration from your project config file, or read config from another cli command stdout if your project is not node.js. 
+Supported editors:
+
+* sublime – Sublime Text
+* atom – Atom Editor
+* code – Visual Studio Code
+* webstorm – WebStorm
+* phpstorm - PhpStorm
+* idea14ce – IDEA 14 CE
+* vim – Vim (via Terminal, Mac OS only)
+* emacs – Emacs (via Terminal, Mac OS only)
+* visualstudio – Visual Studio
+
+
+It is a normal node.js file. You can use all nodej.s API in `.tramprc.js`. You can read configuration from your project config file, or read config from another cli command stdout if your project is not in node.js. 
 
 > NOTE: Tramp only support mysql in recently released versions.
 

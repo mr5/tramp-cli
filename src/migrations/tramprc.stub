@@ -6,6 +6,7 @@ module.exports = {
     password: 'root',
     database: 'databasename'
   },
+  editor: 'webstorm',
   paths: [
     'migrations'
   ]

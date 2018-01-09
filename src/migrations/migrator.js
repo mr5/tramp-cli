@@ -5,9 +5,15 @@ import indentString from 'indent-string';
 import wrapAnsi from 'wrap-ansi';
 import emphasize from 'emphasize';
 import { exec } from 'child_process';
+import openInEditor from 'open-in-editor';
 import Builder from '../schema/builder';
 import MysqlConnection from '../connection/mysql_connection';
-
+// var openInEditor = require('open-in-editor');
+// var editor = openInEditor.configure({
+//   // options
+// }, function(err) {
+//   console.error('Something went wrong: ' + err);
+// });
 export default class Migrator {
   constructor(config = {}) {
     this.config = config;
@@ -21,6 +27,16 @@ export default class Migrator {
 
   getConfig(name, defaultValue = null) {
     return this.config[name] === undefined ? defaultValue : this.config[name];
+  }
+
+  async openFileInEditor(file, line = 1, col = 1) {
+    if (!this.config.editor) {
+      return null;
+    }
+    const editor = openInEditor.configure({
+      editor: this.getConfig('editor')
+    }, e => console.error(e));
+    return editor.open(`${file}:${line}:${col}`);
   }
 
   async createConnection() {
@@ -38,8 +54,8 @@ export default class Migrator {
 
   async isMigrated(file) {
     return (await this.connection
-          .query(`SELECT * FROM ${this.wrapTable('tramp_migrations')} WHERE migration='${file}'`)
-      ).length > 0;
+        .query(`SELECT * FROM ${this.wrapTable('tramp_migrations')} WHERE migration='${file}'`)
+    ).length > 0;
   }
 
   async markAsMigrated(migration, ranSql = '') {

@@ -74,7 +74,19 @@ prog.command('make', 'Make a new migration file')
       path = migrator.paths[0];
     }
     const filename = migrationCreator.create(args.name, path);
-    logger.info(`${chalk.green('A new migration file made:')} ${filename}`);
+    logger.info(`\n${chalk.green('A new migration file made:')} ${filename}`);
+    if (!migrator.getConfig('editor')) {
+      return;
+    }
+    try {
+      await migrator.openFileInEditor(filename, 8, 20);
+      logger.info(`\nYour migration file has been opened in editor: ${chalk.green(migrator.getConfig('editor'))}`);
+      process.exit(0);
+    } catch (e) {
+      logger.warn(chalk.yellow(
+        `\nOpen migration file in editor failed with error: "${chalk.red(e)}". But don\'t worry, nothing went wrong, you can just open it manually.\n`
+      ));
+    }
   });
 
 prog.command('migrate', 'Run the database migrations.')
@@ -82,6 +94,7 @@ prog.command('migrate', 'Run the database migrations.')
     'The statements defined in skipped migrations will not be executed, but log as migrated.')
   .option('--force', 'Run migrate without confirmation.')
   .option('--summary', 'Do not display SQL in unforced mode.')
+  .option('--silent', 'Do not display SQL when migrating.')
   .action(async (args, options, logger) => {
     const migrator = getMigrator();
     await migrator.initialize();
@@ -129,7 +142,7 @@ prog.command('migrate', 'Run the database migrations.')
       if (migrationTasks.length > 0) {
         migrationTasks.push({
           title: `Mark ${migration.file} as migrated`,
-          task () {
+          task() {
             return migrator.markAsMigrated(migration, migrator.getMigrationSql(migration).join('\n\n'));
           }
         });
@@ -148,7 +161,10 @@ prog.command('migrate', 'Run the database migrations.')
         }
       });
     }
-    const tasks = new Listr(mainTasks, { renderer: listrRenderer });
+    const tasks = new Listr(mainTasks, {
+      renderer: options.silent ? 'silent' : listrRenderer,
+      nonTTYRenderer: 'silent'
+    });
     tasks.run().then(() => {
       logger.info(chalk.green(indentString(`\n${pendingMigrations.length} migrations migrated.\n`, 2)));
       migrator.getConnection().close();
