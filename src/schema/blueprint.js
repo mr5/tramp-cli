@@ -55,8 +55,10 @@ export default class Blueprint {
     this.commands.forEach((command) => {
       const method = `compile${_.upperFirst(command.get('name'))}`;
       if (_.isFunction(connection.getSchemaGrammar()[method])) {
-        const sql = connection.getSchemaGrammar()[method](this, command, connection);
+        let sql = connection.getSchemaGrammar()[method](this, command, connection);
         if (sql) {
+          sql = sql.trim();
+          sql = sql.endsWith(';') ? sql : `${sql};`;
           statements.push(sql);
         }
       }

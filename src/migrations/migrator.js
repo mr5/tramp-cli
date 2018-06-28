@@ -89,6 +89,7 @@ export default class Migrator {
         table.dateTime('ran_at').default(
           this.connection.getSchemaGrammar().literal('CURRENT_TIMESTAMP')
         );
+        table.charset('utf8mb4');
       });
       await this.connection.getSchemaBuilder().execute();
     }
