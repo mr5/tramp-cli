@@ -12,7 +12,7 @@ module.exports = {
   ]
 };
 
-// Below is a example for read configuration from your project's cli command. Your project's command `./project_cli dump_config` must output
+// Below is an example for read configuration from your project's cli command. Your project's command `./project_cli dump_config` must output
 // a JSON format string (It must be implemented by yourself, not included in tramp-cli), it's very useful for no-nodejs projects.
 // const child_process = require('child_process');
 // module.exports = JSON.parse(child_process.execSync('./project_cli dump_config'));
